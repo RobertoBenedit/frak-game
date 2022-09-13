@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 window.addEventListener("load", function () {
     const canvas = document.getElementById("canvas1");
     const ctx = canvas.getContext("2d");
@@ -51,8 +53,18 @@ window.addEventListener("load", function () {
             this.player = new Player(this);
         }
         update() {
-            this.player.update()
+            this.player.update();
         }
-        draw() {}
+        draw(context) {
+            this.player.draw(context);
+        }
     }
+    const game = new Game(canvas.width, canvas.hight);
+
+    function animate() {
+        game.update();
+        game.draw(ctx);
+        requestAnimationFrame(animate);
+    }
+    animate();
 });
