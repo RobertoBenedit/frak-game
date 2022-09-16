@@ -95,7 +95,26 @@ window.addEventListener("load", function () {
         }
     }
     class Enemy {
-        constructor() {}
+        constructor(game) {
+            this.game = game;
+            this.x = this.game.width;
+            this.speedX = Math.random() * -1.5 - 0.5;
+            this.markedForDeletion = false;
+        }
+        update() {
+            this.x += this.speedX;
+            if (this.x + this.width < 0) this.markedForDeletion = true;
+        }
+        draw(context) {
+            context.fillStyle = "red";
+            context.fillRect(this.x, this.y, this.width, this.height);
+        }
+    }
+
+    class Angler1 extends Enemy {
+        constructor() {
+    
+}
     }
 
     class Layer {
@@ -111,7 +130,7 @@ window.addEventListener("load", function () {
             this.game = game;
             this.fontSize = 25;
             this.fontFamily = "Helvetica";
-            this.color = 'white';
+            this.color = "white";
         }
         draw(context) {
             //ammo
