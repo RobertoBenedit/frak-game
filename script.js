@@ -48,7 +48,7 @@ window.addEventListener("load", function () {
             context.drawImage(
                 this.image,
                 this.x,
-                this.y,
+                this.y
                 // this.width,
                 // this.height
             );
@@ -56,7 +56,44 @@ window.addEventListener("load", function () {
     }
 
     class Particle {
-        constructor() {}
+        constructor(game, x, y) {
+            this.game = game;
+            this.x = x;
+            this.y = y;
+            this.image = document.getElementById("gears");
+            this.frameX = Math.floor(Math.random() * 3);
+            this.frameX = Math.floor(Math.random() * 3);
+            this.spriteSize = 50;
+            this.sizeModifier = (Math.random() * 0.5 + 0.5).toFixed(1);
+            this.size = this.spriteSize * this.sizeModifier;
+            this.speedX = Math.random() * 6 - 3;
+            this.speedY = Math.random() * -15;
+            this.gravity = 0.5;
+            this.markedForDeletion = false;
+            this.angle = 0;
+            this.va = Math.random() * 0.2 - 0.1;
+        }
+        update() {
+            this.angle += this.va;
+            this.speed += this.gravity;
+            this.x -= this.speedX;
+            this.y += this.speedY;
+            if (this.y > this.game.height + this.size || this.x < -this.size)
+                this.markedForDeletion = true;
+        }
+        draw(context) {
+            context.drawImage(
+                this.image,
+                this.frameX * this.spriteSize,
+                this.framY * this.spriteSize,
+                this.spriteSize,
+                this.spriteSize,
+                this.x,
+                this.y,
+                this.width,
+                this.height
+            );
+        }
     }
 
     class Player {
@@ -70,7 +107,7 @@ window.addEventListener("load", function () {
             this.frameY = 0;
             this.maxFrame = 37;
             this.speedY = 0;
-            this.maxSpeed = 2;
+            this.maxSpeed = 3;
             this.projectiles = [];
             this.image = document.getElementById("player");
             this.powerUp = false;
@@ -84,6 +121,10 @@ window.addEventListener("load", function () {
                 this.speedY = this.maxSpeed;
             else this.speedY = 0;
             this.y += this.speedY;
+            // vertical boundaries
+            if (this.y > this.game.height - this.height * 0.5)
+                this.y = this.game.height - this.height * 0.5;
+            else if (this.y < -this.height * 0.5) this.y = -this.height * 0.5;
             // handle projectiles
             this.projectiles.forEach((projectile) => {
                 projectile.update();
@@ -182,8 +223,10 @@ window.addEventListener("load", function () {
                 this.width,
                 this.height
             );
-            context.font = "20px Helvetica";
-            context.fillText(this.lives, this.x, this.y);
+            if (this.game.debug) {
+                context.font = "20px Helvetica";
+                context.fillText(this.lives, this.x, this.y);
+            }
         }
     }
 
@@ -308,17 +351,17 @@ window.addEventListener("load", function () {
                     message1 = "You lose";
                     message2 = "Try Again";
                 }
-                context.font = "50px " + this.fontFamily;
+                context.font = "70px " + this.fontFamily;
                 context.fillText(
                     message1,
                     this.game.width * 0.5,
-                    this.game.height * 0.5 - 40
+                    this.game.height * 0.5 - 20
                 );
                 context.font = "25px " + this.fontFamily;
                 context.fillText(
                     message2,
                     this.game.width * 0.5,
-                    this.game.height * 0.5 + 40
+                    this.game.height * 0.5 + 20
                 );
             }
             //ammo
