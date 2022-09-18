@@ -28,6 +28,8 @@
 #projectile,
 #gears,
 #hivewhale,
-#drone {
+#drone,
+#smokeExplosion,
+#fireExplosion {
     display: none;
 }
