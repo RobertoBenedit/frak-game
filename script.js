@@ -2,7 +2,7 @@ window.addEventListener("load", function () {
     const canvas = document.getElementById("canvas1");
     const ctx = canvas.getContext("2d");
 
-    canvas.width = 1000;
+    canvas.width = 1400;
     canvas.height = 500;
 
     class InputHandler {
@@ -337,17 +337,18 @@ window.addEventListener("load", function () {
         }
         draw(context) {
             context.drawImage(this.image, this.x, this.y);
-            context.drawImage(
-                this.image,
-                this.frameX * this.width,
-                this.frameY * this.height,
-                this.width,
-                this.height,
-                this.x + this.width,
-                this.y,
-                this.width,
-                this.height
-            );
+            context.drawImage(this.image, this.x + this.width, this.y);
+            // context.drawImage(
+            //     this.image,
+            //     this.frameX * this.width,
+            //     this.frameY * this.height,
+            //     this.width,
+            //     this.height,
+            //     this.x + this.width,
+            //     this.y,
+            //     this.width,
+            //     this.height
+            // );
         }
     }
 
@@ -391,7 +392,7 @@ window.addEventListener("load", function () {
         }
         update(deltaTime) {
             this.x -= this.game.speed;
-            if (this.timer > this.inverval) {
+            if (this.timer > this.interval) {
                 this.frameX++;
                 this.timer = 0;
             } else {
@@ -452,11 +453,11 @@ window.addEventListener("load", function () {
                 let message1, message2;
 
                 if (this.game.score > this.game.winningScore) {
-                    message1 = "You win!";
-                    message2 = "Well done!";
+                    message1 = "Ganaste!!";
+                    message2 = "Bien Hecho!";
                 } else {
-                    message1 = "You lose";
-                    message2 = "Try Again";
+                    message1 = `Perdiste, te faltaron ${80 - this.game.score} puntos`;
+                    message2 = "Intentalo de nuevo!";
                 }
                 context.font = "70px " + this.fontFamily;
                 context.fillText(
